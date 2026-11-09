@@ -1,0 +1,21 @@
+# Atualização SEM reinstalar (OTA) para os APKs de teste (canal "preview").
+# Rodar: expo.dev → Workflows → "Publicar atualização (teste)" → Run.
+# Só serve para mudanças de telas/textos/regras do app (JavaScript).
+name: Publicar atualização (teste)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mensagem:
+        type: string
+        description: O que mudou nesta atualização
+        required: false
+
+jobs:
+  atualizacao:
+    name: Atualização Android (preview)
+    type: update
+    params:
+      channel: preview
+      platform: android
+      message: ${{ inputs.mensagem || 'Atualização' }}

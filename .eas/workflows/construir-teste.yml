@@ -1,0 +1,15 @@
+# Gera o APK de TESTE (instala direto no celular, sem Play Store), canal "preview".
+# Rodar: expo.dev → projeto sap-cidadao → Workflows → "Construir APK de teste" → Run.
+# Precisa de APK novo só quando muda algo nativo (ícone, splash, permissões, pacotes nativos).
+name: Construir APK de teste
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  construir:
+    name: Android (preview, APK)
+    type: build
+    params:
+      platform: android
+      profile: preview

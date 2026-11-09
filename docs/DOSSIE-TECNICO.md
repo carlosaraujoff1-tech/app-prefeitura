@@ -16,7 +16,9 @@ Responsável técnico: Carlos (carlosaraujoff1@gmail.com), único de TI. Comunic
 
 **Prioridades:** velocidade (cidade de ~50 mil habitantes, celulares simples) e acessibilidade (idosos).
 
-**Status (09/11/2026):** Etapa 1 (banco) aplicada e testada. Etapas 2–5 não iniciadas.
+**Status (09/11/2026):** Etapa 1 (banco) aplicada e testada. Etapa 2 (app do cidadão) feita e testada na versão web contra o banco real (login, nova solicitação, acompanhamento, agenda). Ainda **não testada em celular Android** (falta o 1º APK). Etapas 3 (painel), 4 (push/e-mail) e 5 (loja) não iniciadas.
+
+**Conta de TESTE (apagar antes do lançamento):** CPF 529.982.247-25, senha `Teste12345` (e-mail fictício teste.app@sapcidadao.invalid), com 1 solicitação de teste (2026.000002).
 
 ---
 
@@ -79,6 +81,19 @@ Obs.: o teste consome números da sequência de protocolo (não volta no rollbac
 
 ---
 
+## 3.7 App (telas)
+- Abas: **Início** (saudação, "Viu um problema?", banners, acesso rápido, avisos, eventos, notícias), **Serviços** (busca + filtro), **Pedidos** (minhas solicitações), **Agenda** (calendário com cores por categoria + sino "me avise X antes"), **Perfil**.
+- Outras: `solicitacoes/nova` (tipo → local com GPS/bairro → descrição → até 3 fotos WebP), `solicitacoes/[id]` (linha do tempo, cancelar, avaliar 1–5), `agenda/[id]`, `servicos/[id]`, `avisos`, `noticias`, `locais` (distância calculada no celular, Como chegar), `telefones` (emergência em destaque), `notificacoes`, `entrar` (CPF), `cadastro` (CEP preenche a rua via ViaCEP), `esqueci-senha`, `redefinir-senha`, `editar-perfil`, `privacidade`.
+- Rapidez: tela inicial em 1 chamada (`inicio()`), cache salvo no aparelho (TanStack Query persistido em `expo-sqlite/localStorage`) — o app abre mostrando o último conteúdo e atualiza em segundo plano; fotos reduzidas para 1280 px WebP antes do envio.
+- Acessibilidade: textos ≥ 14 px, botões ≥ 48 px, contraste alto, rótulos para leitor de tela, respeita a fonte do celular.
+- Ícones: `@react-native-vector-icons/material-design-icons` (nomes salvos no banco). Ícone do app **provisório** (prédio público) até chegar o brasão.
+- Edge Functions: `entrar` (CPF+senha → sessão; mesma mensagem para CPF inexistente e senha errada; 5 erros/CPF ou 30/IP a cada 15 min) e `recuperar-senha` (CPF → link no e-mail, mostra e-mail mascarado). `verify_jwt=false` (fazem a própria checagem).
+
+## 3.8 Importação do Bubble (09/11/2026)
+- Importado: 7 bairros, 5 categorias de evento, 3 eventos (10/09/2026, títulos tirados dos prints), 4 avisos, 4 notícias (sem foto), 6 banners (viraram cartões coloridos: as fotos eram de banco de imagens no servidor do Bubble), 7 serviços (os 14 do Bubble eram pares repetidos), 4 tipos de solicitação, 1 secretaria provisória ("Obras e Serviços Urbanos"), 10 locais com coordenadas tiradas dos links do Google Maps, 5 telefones de emergência.
+- **Não importado:** usuários, ocorrências, notificações, lembretes e histórico (dados de teste); "ssss"/"TRSTR" (lixo); telefones "+55 11…" (fictícios).
+- **Faltou no export (só vieram 7 colunas por tabela):** nome e telefone dos locais (marcados "(confirmar)"), link de cada serviço (provisório: site da prefeitura), demais eventos.
+
 ## 4. Decisões
 
 - **Banco em São Paulo**, não nos EUA: ~120–150 ms a menos por chamada.
@@ -101,5 +116,7 @@ Obs.: o teste consome números da sequência de protocolo (não volta no rollbac
 
 **Técnicas**
 - Etapa 2: app do cidadão. Etapa 3: painel. Etapa 4: push/e-mail. Etapa 5: publicação.
-- Criar projeto no expo.dev (conta da prefeitura ou do Carlos) e `eas.json`.
+- 1º APK: criar o projeto no expo.dev, ligar o GitHub e rodar o workflow "Construir APK de teste" (`.eas/workflows/`). `eas.json` pronto (preview = APK, production = .aab, versão automática).
+- Apagar a conta de teste e a solicitação 2026.000002 antes do lançamento.
+- Supabase Auth (painel do Supabase): Site URL e Redirect URLs com `sapcidadao://**`; SMTP Resend (Etapa 4).
 - Zerar a sequência de protocolos antes do lançamento.

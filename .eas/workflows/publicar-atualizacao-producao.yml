@@ -1,0 +1,20 @@
+# Atualização SEM reinstalar para quem instalou pela Play Store (canal "production").
+# Só rode depois de testar a mesma mudança no canal preview.
+name: Publicar atualização (produção)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mensagem:
+        type: string
+        description: O que mudou nesta atualização
+        required: false
+
+jobs:
+  atualizacao:
+    name: Atualização Android (production)
+    type: update
+    params:
+      channel: production
+      platform: android
+      message: ${{ inputs.mensagem || 'Atualização' }}

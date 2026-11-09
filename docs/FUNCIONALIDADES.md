@@ -21,7 +21,7 @@ Atualizado em 09/11/2026.
 | 1. Banco de dados (tabelas, segurança, regras, testes) | ✅ Feito (35 verificações ok) |
 | 2. App do cidadão (telas) | ✅ Feito na web · 🟢 falta testar no celular |
 | 2b. Primeiro APK de teste | 🟡 Build em andamento no expo.dev |
-| 3. Painel web (servidores e administração) | ⬜ Não iniciado |
+| 3. Painel web (servidores e administração) | ✅ Feito e testado · ⬜ publicar (aguarda sua autorização) |
 | 4. Notificações no celular (push) e e-mail próprio (Resend) | 🟡 Banco pronto · ⬜ envio |
 | 5. Publicação na Play Store (e iPhone) | ⬜ Não iniciado |
 
@@ -170,29 +170,27 @@ Atualizado em 09/11/2026.
 
 ---
 
-## 4. Painel web (Etapa 3) — ⬜ tudo a fazer
+## 4. Painel web (Etapa 3) — ✅ feito · ⬜ publicar
 
-Mesmo padrão da loja (site em `painel-...expo.app`, só servidores e administradores entram).
+Endereço previsto: `https://sap-cidadao-painel.expo.app` (falta autorizar a publicação). Login com CPF e senha do app; só servidores e administradores.
 
 **Para servidores**
-- ⬜ Fila de solicitações da sua secretaria (filtros por status, bairro, tipo, atrasadas)
-- ⬜ Abrir solicitação: ver fotos, mapa, dados de contato do cidadão
-- ⬜ Mudar status, escrever ao cidadão, nota interna, encaminhar para outra secretaria
-- ⬜ Anexar foto do serviço feito
+- ✅ Visão geral: aguardando resposta, em andamento, fora do prazo, sem resposta há +48h, concluídas, nota média, gráfico de 30 dias
+- ✅ Fila de solicitações da sua secretaria: filtros por situação, tipo e bairro, busca, paginação, exportar planilha
+- ✅ Atendimento: fotos, mapa, telefone e WhatsApp do cidadão, linha do tempo com quem fez cada coisa
+- ✅ Mudar situação + mensagem ao cidadão (com respostas prontas), nota interna, encaminhar para outra secretaria
+- ✅ Anexar foto (ex.: serviço feito) · ✅ Imprimir ordem de serviço
+- ✅ Relatórios por período (tipo, bairro, secretaria, tempo médio, nota)
 
 **Para administradores**
-- ⬜ Avisos, notícias, banners e eventos (com recorte de imagem e conversão para WebP)
-- ⬜ Serviços (com link de cada um) e tipos de solicitação (secretaria, prazo, exige foto/local)
-- ⬜ Locais e telefones, bairros, categorias de evento, secretarias
-- ⬜ Usuários: tornar alguém servidor/admin, desativar conta
-- ⬜ Enviar notificação geral para todos
-- ⬜ Editar os textos das notificações automáticas
-- ⬜ Relatórios: solicitações por tipo/bairro/secretaria, tempo médio, notas de avaliação
-- ⬜ Importar planilha (CSV/Excel) de eventos e locais
-- ⬜ Ver erros do app
-- ⬜ Páginas públicas: política de privacidade e exclusão de conta (exigidas pela Play Store)
-
----
+- ✅ Avisos, notícias, banners e agenda (foto com recorte na proporção certa + WebP automático, agendar publicação)
+- ✅ Serviços (link de cada um, ou abrir solicitação), locais e telefones (cola o link do Google Maps e pega as coordenadas)
+- ✅ Tipos de solicitação (secretaria, prazo, exigir foto/local), secretarias, bairros, categorias da agenda (cor e ícone)
+- ✅ Usuários: transformar em servidor/admin, escolher secretaria, desativar conta (trava: nunca fica sem administrador)
+- ✅ Enviar notificação geral (com prévia de como aparece no celular) · ✅ Editar os textos automáticos
+- ✅ Erros do app · ✅ Páginas públicas: política de privacidade, como excluir a conta, e-mail confirmado
+- ⬜ Importar planilha (CSV/Excel) de eventos e locais (ideia para depois)
+- ⬜ Publicar o painel na internet 👤 (precisa da sua autorização)
 
 ## 5. Notificações e e-mail (Etapa 4)
 

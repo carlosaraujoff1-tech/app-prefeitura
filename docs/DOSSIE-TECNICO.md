@@ -16,7 +16,7 @@ Responsável técnico: Carlos (carlosaraujoff1@gmail.com), único de TI. Comunic
 
 **Prioridades:** velocidade (cidade de ~50 mil habitantes, celulares simples) e acessibilidade (idosos).
 
-**Status (09/11/2026):** Etapa 1 (banco) aplicada e testada. Etapa 2 (app do cidadão) feita e testada na versão web contra o banco real (login, nova solicitação, acompanhamento, agenda). Ainda **não testada em celular Android** (falta o 1º APK). Etapas 3 (painel), 4 (push/e-mail) e 5 (loja) não iniciadas.
+**Status (09/11/2026):** Etapa 1 (banco) aplicada e testada. Etapa 2 (app do cidadão) feita e testada na versão web contra o banco real (login, nova solicitação, acompanhamento, agenda). Ainda **não testada em celular Android** (falta o 1º APK). Etapa 3 (painel web) feita e testada localmente contra o banco real; **ainda não publicada** (aguarda autorização). Etapas 4 (push/e-mail) e 5 (loja) não iniciadas.
 
 **Conta de TESTE (apagar antes do lançamento):** CPF 529.982.247-25, senha `Teste12345` (e-mail fictício teste.app@sapcidadao.invalid), com 1 solicitação de teste (2026.000002).
 
@@ -88,6 +88,16 @@ Obs.: o teste consome números da sequência de protocolo (não volta no rollbac
 - Acessibilidade: textos ≥ 14 px, botões ≥ 48 px, contraste alto, rótulos para leitor de tela, respeita a fonte do celular.
 - Ícones: `@react-native-vector-icons/material-design-icons` (nomes salvos no banco). Ícone do app **provisório** (prédio público) até chegar o brasão.
 - Edge Functions: `entrar` (CPF+senha → sessão; mesma mensagem para CPF inexistente e senha errada; 5 erros/CPF ou 30/IP a cada 15 min) e `recuperar-senha` (CPF → link no e-mail, mostra e-mail mascarado). `verify_jwt=false` (fazem a própria checagem).
+
+## 3.7b Painel web (`painel/`)
+- Vite 8 + React 19 + react-router 8 (HashRouter) + TanStack Query + `@mdi/js` (ícones com os mesmos nomes do app). Reaproveita funções puras do app via alias `@/` (`src/lib/formatar.ts`, `src/lib/erros.ts`) — nunca importar algo com `react-native`.
+- Login com CPF + senha (mesma função `entrar`). Só entra quem é `servidor` ou `admin` ativo; o resto vê "Sem acesso". O banco já bloqueia (RLS); o painel só esconde menus.
+- **Servidor:** Visão geral, Solicitações (só da sua secretaria), Relatórios. **Admin:** tudo.
+- Telas: Visão geral (números, gráfico 30 dias, por situação, mais antigas aguardando); Solicitações (filtros por situação/secretaria/tipo/bairro, busca, paginação, exportar CSV); Atendimento (dados, fotos, mapa, telefone/WhatsApp, linha do tempo com autor, mudar situação + mensagem, respostas prontas, nota interna, encaminhar, anexar foto, imprimir ordem de serviço); Relatórios (período, por tipo/bairro/secretaria, tempo médio, nota, CSV); Avisos, Notícias, Banners, Agenda, Serviços, Locais e telefones, Tipos de solicitação, Secretarias, Bairros, Categorias da agenda (cadastro genérico `componentes/cadastro.tsx`: lista, busca, criar/editar, ativar/desativar, excluir, foto com recorte na proporção + WebP, seletor de ícone, cor, data/hora de Brasília, coordenadas a partir de link do Google Maps); Usuários e equipe (promover a servidor/admin, secretaria, desativar; exportação sem CPF); Enviar notificação geral (com prévia); Textos automáticos; Erros do app.
+- Páginas públicas (exigidas pela Play): `politica-de-privacidade.html`, `excluir-conta.html`, `email-confirmado.html` (usar como Site URL do Supabase Auth).
+- Banco: `20261110090000_painel.sql` — `painel_resumo()`, `painel_historico(id)` (com notas internas e autor; só equipe), `painel_relatorio(inicio, fim)`, trava "nunca ficar sem administrador ativo".
+- Publicação: `.eas/workflows/publicar-painel.yml` (EAS Hosting, domínio `sap-cidadao-painel.expo.app`). Validar: `cd painel && npm ci && npm run build`.
+- **Primeiro administrador:** criar conta no app e promover por SQL: `update public.perfis set tipo='admin' where cpf='<CPF só números>';`
 
 ## 3.8 Importação do Bubble (09/11/2026)
 - Importado: 7 bairros, 5 categorias de evento, 3 eventos (10/09/2026, títulos tirados dos prints), 4 avisos, 4 notícias (sem foto), 6 banners (viraram cartões coloridos: as fotos eram de banco de imagens no servidor do Bubble), 7 serviços (os 14 do Bubble eram pares repetidos), 4 tipos de solicitação, 1 secretaria provisória ("Obras e Serviços Urbanos"), 10 locais com coordenadas tiradas dos links do Google Maps, 5 telefones de emergência.
